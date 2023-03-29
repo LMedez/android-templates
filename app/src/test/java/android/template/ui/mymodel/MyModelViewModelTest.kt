@@ -25,6 +25,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import android.template.data.MyModelRepository
+import android.template.presentation.mymodel.MyModelUiState
+import android.template.presentation.mymodel.MyModelViewModel
 
 /**
  * Example local unit test, which will execute on the development machine (host).

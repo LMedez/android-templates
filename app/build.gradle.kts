@@ -19,7 +19,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.hilt.gradle)
     alias(libs.plugins.ksp)
 }
 
@@ -86,15 +85,13 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
 
-    // Hilt Dependency Injection
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-    // Hilt and instrumented tests.
-    androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.android.compiler)
-    // Hilt and Robolectric tests.
-    testImplementation(libs.hilt.android.testing)
-    kaptTest(libs.hilt.android.compiler)
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.android.compose)
+    // Koin and instrumented tests.
+    testImplementation(libs.koin.test.junit4)
+    testImplementation(libs.koin.test.junit5)
+    testImplementation(libs.koin.test.features)
 
     // Arch Components
     implementation(libs.androidx.lifecycle.viewmodel.compose)

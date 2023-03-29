@@ -16,6 +16,7 @@
 
 package android.template.data.di
 
+import android.app.Application
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -24,8 +25,36 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import android.template.data.MyModelRepository
 import android.template.data.DefaultMyModelRepository
+import android.template.data.local.database.AppDatabase
+import android.template.data.local.database.MyModelDao
+import androidx.room.Room
+import org.koin.android.ext.koin.androidApplication
+import org.koin.dsl.module
 import javax.inject.Inject
 import javax.inject.Singleton
+
+private val repositoryModule = module {
+    factory<MyModelRepository> {
+        DefaultMyModelRepository(get())
+    }
+}
+
+private val roomModule = module {
+    fun provideDatabase(application: Application): AppDatabase {
+        return Room.databaseBuilder(application, AppDatabase::class.java, "db")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    fun provideMyModelDao(database: AppDatabase): MyModelDao {
+        return database.myModelDao()
+    }
+
+    single { provideDatabase(androidApplication()) }
+    single { provideMyModelDao(get()) }
+}
+
+val dataModule = listOf(roomModule, repositoryModule)
 
 @Module
 @InstallIn(SingletonComponent::class)

@@ -16,6 +16,7 @@
 
 package android.template.ui.mymodel
 
+import android.template.ui.MyModelScreen
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
