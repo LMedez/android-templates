@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-package android.template.data.local.database
+package android.template.data.local.entities
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
+import android.template.domain.model.MyModel
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Database(entities = [MyModel::class], version = 1)
-abstract class AppDatabase : RoomDatabase() {
-    abstract fun myModelDao(): MyModelDao
-}
+@Entity
+data class MyModelEntity(
+    val name: String,
+    @PrimaryKey(autoGenerate = true) var uid: Int = 0
+)
+
+fun MyModel.asMyModelEntity() = MyModelEntity(
+    this.name,
+    this.uid
+)

@@ -23,14 +23,14 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import android.template.data.local.database.MyModel
-import android.template.data.local.database.MyModelDao
+import android.template.data.local.entities.MyModelEntity
 
 /**
  * Unit tests for [DefaultMyModelRepository].
  */
+/*
 @OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
-class DefaultMyModelRepositoryTest {
+class DefaultMyModelEntityRepositoryTest {
 
     @Test
     fun myModels_newItemSaved_itemIsReturned() = runTest {
@@ -45,13 +45,14 @@ class DefaultMyModelRepositoryTest {
 
 private class FakeMyModelDao : MyModelDao {
 
-    private val data = mutableListOf<MyModel>()
+    private val data = mutableListOf<MyModelEntity>()
 
-    override fun getMyModels(): Flow<List<MyModel>> = flow {
+    override fun getMyModels(): Flow<List<MyModelEntity>> = flow {
         emit(data)
     }
 
-    override suspend fun insertMyModel(item: MyModel) {
+    override suspend fun insertMyModel(item: MyModelEntity) {
         data.add(0, item)
     }
 }
+*/

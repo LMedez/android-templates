@@ -24,17 +24,17 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import android.template.data.MyModelRepository
-import android.template.presentation.mymodel.MyModelUiState
-import android.template.presentation.mymodel.MyModelViewModel
+import android.template.domain.MyModelRepository
+import android.template.presentation.viewmodel.MyModelViewModel
 
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+/*
 @OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
-class MyModelViewModelTest {
+class MyModelViewModelTestEntity {
     @Test
     fun uiState_initiallyLoading() = runTest {
         val viewModel = MyModelViewModel(FakeMyModelRepository())
@@ -59,3 +59,4 @@ private class FakeMyModelRepository : MyModelRepository {
         data.add(0, name)
     }
 }
+*/

@@ -14,28 +14,14 @@
  * limitations under the License.
  */
 
-package android.template.data.local.database
+package android.template.data.local
 
-import androidx.room.Dao
-import androidx.room.Entity
-import androidx.room.Insert
-import androidx.room.PrimaryKey
-import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
+import android.template.data.local.dao.MyModelDao
+import android.template.data.local.entities.MyModelEntity
+import androidx.room.Database
+import androidx.room.RoomDatabase
 
-@Entity
-data class MyModel(
-    val name: String
-) {
-    @PrimaryKey(autoGenerate = true)
-    var uid: Int = 0
-}
-
-@Dao
-interface MyModelDao {
-    @Query("SELECT * FROM mymodel ORDER BY uid DESC LIMIT 10")
-    fun getMyModels(): Flow<List<MyModel>>
-
-    @Insert
-    suspend fun insertMyModel(item: MyModel)
+@Database(entities = [MyModelEntity::class], version = 1)
+abstract class LocalDatabase : RoomDatabase() {
+    abstract fun myModelDao(): MyModelDao
 }

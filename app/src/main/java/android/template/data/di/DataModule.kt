@@ -17,36 +17,30 @@
 package android.template.data.di
 
 import android.app.Application
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import android.template.data.MyModelRepository
-import android.template.data.DefaultMyModelRepository
-import android.template.data.local.database.AppDatabase
-import android.template.data.local.database.MyModelDao
+import android.template.data.local.LocalDataSource
+import android.template.domain.MyModelRepository
+import android.template.data.local.LocalDatabase
+import android.template.data.local.dao.MyModelDao
+import android.template.data.repository.MyModelRepositoryImpl
 import androidx.room.Room
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
-import javax.inject.Inject
-import javax.inject.Singleton
 
 private val repositoryModule = module {
+    factory { LocalDataSource(get()) }
     factory<MyModelRepository> {
-        DefaultMyModelRepository(get())
+        MyModelRepositoryImpl(get())
     }
 }
 
 private val roomModule = module {
-    fun provideDatabase(application: Application): AppDatabase {
-        return Room.databaseBuilder(application, AppDatabase::class.java, "db")
+    fun provideDatabase(application: Application): LocalDatabase {
+        return Room.databaseBuilder(application, LocalDatabase::class.java, "db")
             .fallbackToDestructiveMigration()
             .build()
     }
 
-    fun provideMyModelDao(database: AppDatabase): MyModelDao {
+    fun provideMyModelDao(database: LocalDatabase): MyModelDao {
         return database.myModelDao()
     }
 
@@ -55,24 +49,3 @@ private val roomModule = module {
 }
 
 val dataModule = listOf(roomModule, repositoryModule)
-
-@Module
-@InstallIn(SingletonComponent::class)
-interface DataModule {
-
-    @Singleton
-    @Binds
-    fun bindsMyModelRepository(
-        myModelRepository: DefaultMyModelRepository
-    ): MyModelRepository
-}
-
-class FakeMyModelRepository @Inject constructor() : MyModelRepository {
-    override val myModels: Flow<List<String>> = flowOf(fakeMyModels)
-
-    override suspend fun add(name: String) {
-        throw NotImplementedError()
-    }
-}
-
-val fakeMyModels = listOf("One", "Two", "Three")

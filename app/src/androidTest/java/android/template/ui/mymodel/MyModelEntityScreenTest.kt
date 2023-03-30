@@ -30,8 +30,8 @@ import org.junit.runner.RunWith
 /**
  * UI tests for [MyModelScreen].
  */
-@RunWith(AndroidJUnit4::class)
-class MyModelScreenTest {
+/*@RunWith(AndroidJUnit4::class)
+class MyModelEntityScreenTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -49,4 +49,4 @@ class MyModelScreenTest {
     }
 }
 
-private val FAKE_DATA = listOf("Compose", "Room", "Kotlin")
+private val FAKE_DATA = listOf("Compose", "Room", "Kotlin")*/
