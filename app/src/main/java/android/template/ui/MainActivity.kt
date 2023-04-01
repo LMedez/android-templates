@@ -19,27 +19,27 @@ package android.template.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.background
+import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
-import dagger.hilt.android.AndroidEntryPoint
-import android.template.ui.theme.MyApplicationTheme
+import androidx.compose.ui.graphics.Color
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApplicationTheme {
+
+            Text(text = "asdasd", Modifier.background(Color.Red))
+            //FirstScreen()
+
+            /*MyApplicationTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = Color.Black
                 ) {
-                    MainNavigation()
                 }
-            }
+            }*/
         }
     }
 }

@@ -17,75 +17,62 @@
 package android.template.ui
 
 import android.template.domain.model.MyModel
+import android.template.presentation.viewmodel.MyModelUiState
 import android.template.presentation.viewmodel.MyModelViewModel
-import android.template.presentation.viewmodel.ResultStatus
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle.State.STARTED
-import androidx.lifecycle.repeatOnLifecycle
 import android.template.ui.theme.MyApplicationTheme
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun MyModelScreen(modifier: Modifier = Modifier, viewModel: MyModelViewModel = getViewModel()) {
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val model by produceState<ResultStatus<MyModel>>(
-        initialValue = ResultStatus.Loading,
-        key1 = lifecycle,
-        key2 = viewModel
-    ) {
-        lifecycle.repeatOnLifecycle(state = STARTED) {
-            viewModel.getMyModel("id").collect { value = it }
+fun FirstScreen(modifier: Modifier = Modifier, viewModel: MyModelViewModel = getViewModel()) {
+
+    val myModelState by viewModel.myModelState.collectAsState()
+
+    when (myModelState) {
+        is MyModelUiState.Loading -> ShowProgress()
+        is MyModelUiState.Success -> {
+            val data = (myModelState as MyModelUiState.Success).data
+            MyModelScreen(modifier = modifier, model = data)
         }
-    }
-    if (model is ResultStatus.Success) {
-        MyModelScreen(
-            model = (model as ResultStatus.Success).data,
-            modifier = modifier
-        )
+        is MyModelUiState.Error -> (myModelState as MyModelUiState.Error).message
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun MyModelScreen(
-    model: MyModel,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier) {
-        var nameMyModel by remember { mutableStateOf("Compose") }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            TextField(
-                value = nameMyModel,
-                onValueChange = { nameMyModel = it }
-            )
+fun ShowProgress() {
+    CircularProgressIndicator()
+}
 
-            Button(modifier = Modifier.width(96.dp), onClick = {}) {
-                Text("Save")
+@Composable
+fun MyModelScreen(
+    modifier: Modifier = Modifier,
+    model: MyModel,
+) {
+    Box(modifier = modifier.background(Color.Red)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(13.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(text = model.name)
+            Spacer(modifier = Modifier.height(10.dp))
+            Button(onClick = {}) {
+                Text("Navigate to second screen")
             }
         }
-        Text(text = model.name)
     }
+
 }
 
 // Previews
@@ -94,7 +81,7 @@ internal fun MyModelScreen(
 @Composable
 private fun DefaultPreview() {
     MyApplicationTheme {
-        MyModelScreen(MyModel("Compose", 2))
+        MyModelScreen(model = MyModel("Compose", 2))
     }
 }
 
@@ -102,6 +89,6 @@ private fun DefaultPreview() {
 @Composable
 private fun PortraitPreview() {
     MyApplicationTheme {
-        MyModelScreen(MyModel("Compose", 2))
+        MyModelScreen(model = MyModel("Compose", 2))
     }
 }

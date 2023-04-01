@@ -16,26 +16,34 @@
 
 package android.template.presentation.viewmodel
 
+import android.template.data.ResultStatus
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import android.template.domain.MyModelRepository
 import android.template.domain.model.MyModel
+import android.util.Log
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class MyModelViewModel(
     private val myModelRepository: MyModelRepository
 ) : ViewModel() {
 
-    fun getMyModel(id: String): StateFlow<ResultStatus<MyModel>> {
-        return myModelRepository
-            .getMyModel(id).map<MyModel, ResultStatus<MyModel>>{value -> ResultStatus.Success(value) }
-            .catch { emit(ResultStatus.Error(it.message)) }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ResultStatus.Loading)
+    private val _myModelState = MutableStateFlow<MyModelUiState>(MyModelUiState.Loading)
+    val myModelState = _myModelState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            _myModelState.value = when(val result = myModelRepository.getMyModel("1")) {
+                is ResultStatus.Success -> MyModelUiState.Success(result.data)
+                is ResultStatus.Error -> MyModelUiState.Error(result.exception?.message)
+            }
+        }
     }
 }
 
-sealed class ResultStatus <out T> {
-    object Loading: ResultStatus<Nothing>()
-    data class Success<out T>(val data : T) : ResultStatus<T>()
-    data class Error<out T>(val message: String? = null) : ResultStatus<T>()
+sealed interface MyModelUiState {
+    object Loading : MyModelUiState
+    data class Error(val message: String?) : MyModelUiState
+    data class Success(val data: MyModel) : MyModelUiState
 }

@@ -1,16 +1,23 @@
 package android.template.data.repository
 
+import android.template.data.ResultStatus
 import android.template.data.local.LocalDataSource
-import android.template.data.local.entities.MyModelEntity
 import android.template.domain.MyModelRepository
 import android.template.domain.model.MyModel
 import android.template.domain.model.asMyModel
-import kotlinx.coroutines.flow.flow
+import android.util.Log
 
 class MyModelRepositoryImpl(
     private val localDataSource: LocalDataSource
 ) : MyModelRepository {
-    override fun getMyModel(id: String) = flow<MyModel> { localDataSource.getMyModelEntity(id).asMyModel()}
+    override suspend fun getMyModel(id: String): ResultStatus<MyModel> {
+        return try {
+            val localData = localDataSource.getMyModelEntity(id).asMyModel()
+            ResultStatus.Success(MyModel("lucho", 2))
+        } catch (e: Exception) {
+            ResultStatus.Error(e)
+        }
+    }
 
     override suspend fun saveMyModel(myModel: MyModel) {
         localDataSource.saveMyModel(myModel)

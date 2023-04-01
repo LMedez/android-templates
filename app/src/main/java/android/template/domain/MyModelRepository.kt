@@ -16,10 +16,10 @@
 
 package android.template.domain
 
+import android.template.data.ResultStatus
 import android.template.domain.model.MyModel
-import kotlinx.coroutines.flow.Flow
 
 interface MyModelRepository {
-    fun getMyModel(id: String): Flow<MyModel>
+    suspend fun getMyModel(id: String): ResultStatus<MyModel>
     suspend fun saveMyModel(myModel: MyModel)
 }
