@@ -23,65 +23,71 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import android.template.ui.theme.MyApplicationTheme
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun FirstScreen(modifier: Modifier = Modifier, viewModel: MyModelViewModel = getViewModel()) {
-
+fun FirstScreen(
+    modifier: Modifier = Modifier,
+    navigateUp: (String) -> Unit,
+    viewModel: MyModelViewModel = getViewModel()
+) {
     val myModelState by viewModel.myModelState.collectAsState()
 
     when (myModelState) {
         is MyModelUiState.Loading -> ShowProgress()
         is MyModelUiState.Success -> {
             val data = (myModelState as MyModelUiState.Success).data
-            MyModelScreen(modifier = modifier, model = data)
+            MyModelScreen(model = data, navigateUp = navigateUp)
         }
-        is MyModelUiState.Error -> (myModelState as MyModelUiState.Error).message
+        is MyModelUiState.Error -> {
+            (myModelState as MyModelUiState.Error).message
+        }
     }
 }
 
 @Composable
 fun ShowProgress() {
-    CircularProgressIndicator()
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator()
+    }
 }
 
 @Composable
 fun MyModelScreen(
-    modifier: Modifier = Modifier,
     model: MyModel,
+    navigateUp: (String) -> Unit
 ) {
-    Box(modifier = modifier.background(Color.Red)) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(13.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
-            Text(text = model.name)
-            Spacer(modifier = Modifier.height(10.dp))
-            Button(onClick = {}) {
-                Text("Navigate to second screen")
-            }
+        Text(text = model.name)
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(onClick = { navigateUp(model.name) }) {
+            Text("Navigate to second screen")
         }
     }
 
 }
 
 // Previews
-
 @Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {
     MyApplicationTheme {
-        MyModelScreen(model = MyModel("Compose", 2))
+        MyModelScreen(model = MyModel("Compose", 2)) {}
     }
 }
 
@@ -89,6 +95,6 @@ private fun DefaultPreview() {
 @Composable
 private fun PortraitPreview() {
     MyApplicationTheme {
-        MyModelScreen(model = MyModel("Compose", 2))
+        MyModelScreen(model = MyModel("Compose", 2)) {}
     }
 }

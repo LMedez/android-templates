@@ -4,16 +4,17 @@ import android.template.data.ResultStatus
 import android.template.data.local.LocalDataSource
 import android.template.domain.MyModelRepository
 import android.template.domain.model.MyModel
-import android.template.domain.model.asMyModel
-import android.util.Log
+import kotlinx.coroutines.delay
 
 class MyModelRepositoryImpl(
     private val localDataSource: LocalDataSource
 ) : MyModelRepository {
     override suspend fun getMyModel(id: String): ResultStatus<MyModel> {
         return try {
-            val localData = localDataSource.getMyModelEntity(id).asMyModel()
-            ResultStatus.Success(MyModel("lucho", 2))
+            // This is the normal code you call when room has data
+            // val localData = localDataSource.getMyModelEntity(id).asMyModel()
+            delay(3000)
+            ResultStatus.Success(MyModel("Model Data", 1))
         } catch (e: Exception) {
             ResultStatus.Error(e)
         }
