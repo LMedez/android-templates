@@ -9,14 +9,12 @@ This template is compatible with the latest **stable** version of Android Studio
 ## Features
 
 * Room Database
-* Hilt
+* Koin
 * ViewModel, read+write
-* UI in Compose, list + write (Material3)
+* UI in Compose
 * Navigation
 * Repository and data source
 * Kotlin Coroutines and Flow
-* Unit tests
-* UI tests using fake data with Hilt
 
 ## Usage
 
