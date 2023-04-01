@@ -4,7 +4,7 @@ Architecture starter template (single module)
 This template is compatible with the latest **stable** version of Android Studio.
 
 ## Screenshots
-![Screenshot](https://github.com/android/architecture-templates/raw/main/screenshot_koin.png)
+![Screenshot](https://raw.githubusercontent.com/LMedez/android-templates/main/screenshot_koin.png)
 
 ## Features
 
