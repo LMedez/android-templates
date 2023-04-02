@@ -20,6 +20,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.ksp)
+    // Before adding the plugin make sure to add the google-services.json file
+    // Without google-services.json file the build should be fail for Firestore instantiate
+    // alias(libs.plugins.google.services)
 }
 
 android {
@@ -100,6 +103,11 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
 
     // Compose
     implementation(libs.androidx.compose.ui)

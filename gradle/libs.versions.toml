@@ -17,6 +17,8 @@ junit = "4.13.2"
 kotlin = "1.8.10"
 ksp = "1.8.10-1.0.9"
 koin = "3.4.0"
+firebaseBom = "31.1.0"
+googleServices = "4.3.14"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
@@ -46,9 +48,15 @@ koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "
 koin-test-junit5 = { module = "io.insert-koin:koin-test-junit5", version.ref = "koin" }
 koin-test-features = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 
+# Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom" , version.ref = "firebaseBom" }
+firebase-auth = { module  ="com.google.firebase:firebase-auth-ktx" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }

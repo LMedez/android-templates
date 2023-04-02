@@ -2,12 +2,14 @@ package android.template.data.repository
 
 import android.template.data.ResultStatus
 import android.template.data.local.LocalDataSource
+import android.template.data.remote.firebase.FirestoreDataSource
 import android.template.domain.MyModelRepository
 import android.template.domain.model.MyModel
 import kotlinx.coroutines.delay
 
 class MyModelRepositoryImpl(
-    private val localDataSource: LocalDataSource
+    private val localDataSource: LocalDataSource,
+    private val firestoreDataSource: FirestoreDataSource
 ) : MyModelRepository {
     override suspend fun getMyModel(id: String): ResultStatus<MyModel> {
         return try {

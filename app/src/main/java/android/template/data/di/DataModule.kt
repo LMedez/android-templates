@@ -21,15 +21,26 @@ import android.template.data.local.LocalDataSource
 import android.template.domain.MyModelRepository
 import android.template.data.local.LocalDatabase
 import android.template.data.local.dao.MyModelDao
+import android.template.data.remote.firebase.FirestoreDataSource
 import android.template.data.repository.MyModelRepositoryImpl
 import androidx.room.Room
+import com.google.firebase.firestore.FirebaseFirestore
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
+
+private val firestoreModule = module {
+    single { FirebaseFirestore.getInstance() }
+    single {
+        FirestoreDataSource(
+            firebaseFirestore = get(),
+        )
+    }
+}
 
 private val repositoryModule = module {
     factory { LocalDataSource(get()) }
     factory<MyModelRepository> {
-        MyModelRepositoryImpl(get())
+        MyModelRepositoryImpl(get(), get())
     }
 }
 
@@ -48,4 +59,4 @@ private val roomModule = module {
     single { provideMyModelDao(get()) }
 }
 
-val dataModule = listOf(roomModule, repositoryModule)
+val dataModule = listOf(roomModule, repositoryModule, firestoreModule)
