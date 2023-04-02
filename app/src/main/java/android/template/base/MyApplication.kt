@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.template
+package android.template.base
 
 import android.app.Application
 import android.template.data.di.dataModule
