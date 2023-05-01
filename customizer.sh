@@ -84,6 +84,7 @@ fi
 # Remove additional files
 echo "Removing additional files"
 rm -rf .google/
+rm -rf .github/
 rm -rf CONTRIBUTING.md LICENSE README.md customizer.sh
 rm -rf .git/
 echo "Done!"
