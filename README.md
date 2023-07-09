@@ -11,7 +11,7 @@ This template is compatible with the latest **stable** version of Android Studio
 * Room Database
 * Koin
 * ViewModel, read+write
-* UI in Compose
+* UI in traditional XML
 * Navigation
 * Repository and data source
 * Kotlin Coroutines and Flow
