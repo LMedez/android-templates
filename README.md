@@ -21,7 +21,7 @@ This template is compatible with the latest **stable** version of Android Studio
 1. Clone this branch
 
 ```
-git clone https://github.com/android/architecture-templates.git --branch base
+git clone https://github.com/android/architecture-templates.git --branch base-xml
 ```
 
 2. Run the customizer script:
